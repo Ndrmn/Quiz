@@ -71,3 +71,59 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*-----------------*/
+.navbar-brand {
+  font-size: 24px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.margin {
+  margin-bottom: 20px;
+}
+
+.btn {
+  font-size: 18px;
+}
+
+.btn-close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.btn {
+  margin-top: 20px;
+}
+
+.card {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.answer {
+  margin-left: 20px;
+  margin-top: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.static {
+  position: static;
+  margin-left: 10px;
+}
+
+.form-check-input {
+  margin: 0px 10px;
+}
+
+.form-check-label {
+  font-size: 18px;
+}
+
+footer {
+  min-height: 10px;
+}
