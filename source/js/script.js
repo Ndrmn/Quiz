@@ -1,11 +1,18 @@
+// Global variables
+
 let nameValue = 0;
 let currentNameValue;
+let quizObj = {};
+
+// Radiobutton function-generator
 
 function nextName () {
 
 	nameValue = nameValue + 1;
 	return nameValue;
 }
+
+// Create quiz card function
 
 function createQuizFunc () {
 
@@ -66,6 +73,8 @@ function createQuizFunc () {
 
 }
 
+// Create question card function
+
 function addQuestionFunc () {
 
 	let question = document.createElement('div');
@@ -107,6 +116,8 @@ function addQuestionFunc () {
 	return question;
 }
 
+// Create answer function
+
 function addAnswerFunc () {
 
 	let answer = document.createElement('div');
@@ -143,6 +154,8 @@ function addAnswerFunc () {
 	return answer;
 }
 
+// Add quiz button
+
 let addQuizBtn = document.querySelector('.createQuiz');
 
 addQuizBtn.addEventListener('click', function() {
@@ -150,6 +163,7 @@ addQuizBtn.addEventListener('click', function() {
 });
 
 
+// Remove element button
 
 document.addEventListener('click', function (e) {
 
@@ -162,6 +176,7 @@ document.addEventListener('click', function (e) {
 	}
 });
 
+// Add question button
 
 document.addEventListener('click', function (e) {
 
@@ -175,6 +190,8 @@ document.addEventListener('click', function (e) {
 		}
 	}
 });
+
+// Add answer button
 
 document.addEventListener('click', function (e) {
 
@@ -196,6 +213,8 @@ document.addEventListener('click', function (e) {
 	}
 });
 
+// Export quiz-object to console
+
 document.addEventListener('click', function (e) {
 
 	let sendBtn = document.querySelectorAll('.send');
@@ -204,13 +223,31 @@ document.addEventListener('click', function (e) {
 
 		if(elem == e.target) {
 
-			let quizObj = {};
+			let quiz = elem.parentNode.parentNode;
+			let quizElems = quiz.childNodes;
+			quizObj.name = quizElems[1].value;
 
-			let findNameS1 = elem.parentNode.parentNode;
-			let findNameS2 = findNameS1.childNodes;
-			quizObj.name = findNameS2[1].value;
+			for (i=2; i<(quizElems.length-2); i++) {
+
+				let questions = quizElems[i].childNodes;
+
+				let questionElems = questions[1].childNodes;
+
+				quizObj[`question${i-1}`] = {};
+				quizObj[`question${i-1}`].name = questionElems[1].value;
+				quizObj[`question${i-1}`].answers = {};
+
+				for (n=2; n<(questionElems.length-1); n++) {
+
+					let answerElems = questionElems[n].childNodes;
+
+					quizObj[`question${i-1}`].answers[`answer${n-1}`] = {};
+					quizObj[`question${i-1}`].answers[`answer${n-1}`].answerName = answerElems[0].value;
+					quizObj[`question${i-1}`].answers[`answer${n-1}`].answerIsTrue = answerElems[1].checked;
+				}
+			};
+
 			console.log(quizObj);
-
 		}
 	}
 });
