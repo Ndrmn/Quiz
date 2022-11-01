@@ -2,7 +2,7 @@
 
 let nameValue = 0;
 let currentNameValue;
-let quizObj = {};
+let quizArr = [];
 
 // Radiobutton function-generator
 
@@ -46,30 +46,35 @@ function createQuizFunc () {
 	newQuestion.classList.add('addQuestion');
 	newQuestion.innerText = '+ question';
 
-	let sendButtonDiv = document.createElement('div');
-	sendButtonDiv.classList.add('d-flex');
-	sendButtonDiv.classList.add('justify-content-center');
+	// let sendButtonDiv = document.createElement('div');
+	// sendButtonDiv.classList.add('d-flex');
+	// sendButtonDiv.classList.add('justify-content-center');
 
-	let sendButton = document.createElement('button');
-	sendButton.classList.add('btn');
-	sendButton.classList.add('btn-primary');
-	sendButton.classList.add('send');
-	sendButton.type = 'button';
-	sendButton.innerText = 'Send';
+	// let sendButton = document.createElement('button');
+	// sendButton.classList.add('btn');
+	// sendButton.classList.add('btn-primary');
+	// sendButton.classList.add('send');
+	// sendButton.type = 'button';
+	// sendButton.innerText = 'Send';
 
 
 
 	let quizContainer = document.querySelector('.quizContainer');
 
 	quiz.append(closeButton);
-	sendButtonDiv.append(sendButton);
+//	sendButtonDiv.append(sendButton);
 	quizBody.append(h3Title);
 	quizBody.append(inputQuizName);
 	quizBody.append(newQuestion);
-	quizBody.append(sendButtonDiv);
 	quiz.append(quizBody);
 
 	quizContainer.append(quiz);
+
+	let showButton = document.querySelector('.send');
+
+	if (showButton.classList.contains('hide')) {
+		showButton.classList.remove('hide');
+	};
 
 }
 
@@ -170,8 +175,15 @@ document.addEventListener('click', function (e) {
 	let closeBtns = document.querySelectorAll('.btn-close');
 
 		for (let elem of closeBtns) {
-		if(elem == e.target) {
+		if (elem == e.target) {
 			elem.parentNode.remove();
+		}
+
+		let quizFalse = document.querySelector('.card-body');
+		let buttonToHide = document.querySelector('.send');
+
+		if (!quizFalse) {
+			buttonToHide.classList.add('hide');
 		}
 	}
 });
@@ -215,41 +227,52 @@ document.addEventListener('click', function (e) {
 
 // Export quiz-object to console
 
-document.addEventListener('click', function (e) {
+let sendBtn = document.querySelector('.send');
 
-	let sendBtn = document.querySelectorAll('.send');
+sendBtn.addEventListener('click', function () {
 
-	for (let elem of sendBtn) {
 
-		if(elem == e.target) {
+	let quizContainer = document.querySelector('.quizContainer');;
 
-			let quiz = elem.parentNode.parentNode;
-			let quizElems = quiz.childNodes;
-			quizObj.name = quizElems[1].value;
+	let quizList = quizContainer.childNodes;
 
-			for (i=2; i<(quizElems.length-2); i++) {
+	for (i=3; i<quizList.length; i++) {
 
-				let questions = quizElems[i].childNodes;
+		let quiz = quizList[i];
 
-				let questionElems = questions[1].childNodes;
+		let quizStructure = quiz.childNodes;
 
-				quizObj[`question${i-1}`] = {};
-				quizObj[`question${i-1}`].name = questionElems[1].value;
-				quizObj[`question${i-1}`].answers = {};
+		let quizElems = quizStructure[1].childNodes;
 
-				for (n=2; n<(questionElems.length-1); n++) {
+		quizArr[i-3] = {};
 
-					let answerElems = questionElems[n].childNodes;
+		quizArr[i-3].quizName = quizElems[1].value;
 
-					quizObj[`question${i-1}`].answers[`answer${n-1}`] = {};
-					quizObj[`question${i-1}`].answers[`answer${n-1}`].answerName = answerElems[0].value;
-					quizObj[`question${i-1}`].answers[`answer${n-1}`].answerIsTrue = answerElems[1].checked;
-				}
+		quizArr[i-3].questions = [];
+
+
+		for (n=2; n<(quizElems.length-1); n++) {
+
+			let questionElems = quizElems[n].childNodes[1].childNodes;
+
+			quizArr[i-3].questions[n-2] = {};
+
+			quizArr[i-3].questions[n-2].questionName = questionElems[1].value;
+
+			quizArr[i-3].questions[n-2].answers = [];
+
+			for (a = 2; a<(questionElems.length-1); a++) {
+				let answers = questionElems[a].childNodes;
+
+				quizArr[i-3].questions[n-2].answers[a-2] = {};
+				quizArr[i-3].questions[n-2].answers[a-2].answerName = answers[0].value;
+				quizArr[i-3].questions[n-2].answers[a-2].answerIsTrue = answers[1].checked;
 			};
+		};
+	};
 
-			console.log(quizObj);
-		}
-	}
+	console.log(quizArr);
+
 });
 
 
