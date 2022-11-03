@@ -76,6 +76,8 @@ function createQuizFunc () {
 		showButton.classList.remove('hide');
 	};
 
+	dragNDrop();
+
 }
 
 // Create question card function
@@ -92,6 +94,8 @@ function addQuestionFunc () {
 
 	let questionBody = document.createElement('div');
 	questionBody.classList.add('card-body');
+	questionBody.classList.add('question');
+
 
 	let questionTitle = document.createElement('h4');
 	questionTitle.classList.add('title');
@@ -117,6 +121,8 @@ function addQuestionFunc () {
 
 	question.append(closeButton);
 	question.append(questionBody);
+
+//	dragNDrop();
 
 	return question;
 }
@@ -156,6 +162,8 @@ function addAnswerFunc () {
 	answer.append(btnLabel);
 	answer.append(closeButton);
 
+//	dragNDrop();
+
 	return answer;
 }
 
@@ -186,6 +194,7 @@ document.addEventListener('click', function (e) {
 			buttonToHide.classList.add('hide');
 		}
 	}
+	dragNDrop();
 });
 
 // Add question button
@@ -276,3 +285,29 @@ sendBtn.addEventListener('click', function () {
 });
 
 
+function dragNDrop() {
+
+	dragula(
+		[
+			document.querySelector('.quizContainer')
+		]);
+	// dragula(
+	// 	[
+	// 		document.querySelector('.card-body')
+
+
+	// 	]);
+};
+
+
+document.addEventListener('mousedown', function(e) {
+
+	let target = e.target;
+	console.log(target);
+// 		if (target.classList.contains('question')) {
+
+
+// //			e.stopPropagation();
+// //			console.log('test');
+// 		};
+	});
