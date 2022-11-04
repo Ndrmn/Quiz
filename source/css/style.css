@@ -132,6 +132,19 @@ footer {
   display: none;
 }
 
+.questionsContainer {
+  padding: 20px 0px;
+  min-height: 100px;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .gu-mirror {
   position: fixed !important;
   margin: 0 !important;

@@ -19,6 +19,7 @@ function createQuizFunc () {
 	let quiz = document.createElement('div');
 	quiz.classList.add('card');
 	quiz.classList.add('container');
+	quiz.classList.add('draggableQuiz');	
 
 	let closeButton = document.createElement('button');
 	closeButton.classList.add('btn-close');
@@ -27,10 +28,12 @@ function createQuizFunc () {
 
 	let quizBody = document.createElement('div');
 	quizBody.classList.add('card-body');
+	quizBody.classList.add('qstn');	
 
 	let h3Title = document.createElement('h3');
 	h3Title.classList.add('title');
 	h3Title.classList.add('h3');
+	h3Title.classList.add('noselect');
 	h3Title.innerText = 'Enter name of quiz:';
 
 	let inputQuizName = document.createElement('input');
@@ -38,6 +41,9 @@ function createQuizFunc () {
 	inputQuizName.type = 'text';
 	inputQuizName.placeholder = 'Quiz name';
 	inputQuizName.ariaLabel="default input example";
+
+	let questionContainer = document.createElement('div');
+	questionContainer.classList.add('questionsContainer');
 
 	let newQuestion = document.createElement('button');
 	newQuestion.type = 'button';
@@ -65,6 +71,7 @@ function createQuizFunc () {
 //	sendButtonDiv.append(sendButton);
 	quizBody.append(h3Title);
 	quizBody.append(inputQuizName);
+	quizBody.append(questionContainer);
 	quizBody.append(newQuestion);
 	quiz.append(quizBody);
 
@@ -87,6 +94,7 @@ function addQuestionFunc () {
 	let question = document.createElement('div');
 	question.classList.add('card');
 
+
 	let closeButton = document.createElement('button');
 	closeButton.classList.add('btn-close');
 	closeButton.type = 'button';
@@ -95,11 +103,13 @@ function addQuestionFunc () {
 	let questionBody = document.createElement('div');
 	questionBody.classList.add('card-body');
 	questionBody.classList.add('question');
+	questionBody.classList.add('draggableQuestion');
 
 
 	let questionTitle = document.createElement('h4');
 	questionTitle.classList.add('title');
 	questionTitle.classList.add('h4');
+	questionTitle.classList.add('noselect');
 	questionTitle.innerText = 'Enter name of question:';
 
 	let questionName = document.createElement('input');
@@ -122,7 +132,7 @@ function addQuestionFunc () {
 	question.append(closeButton);
 	question.append(questionBody);
 
-//	dragNDrop();
+	dragNDrop();
 
 	return question;
 }
@@ -149,6 +159,7 @@ function addAnswerFunc () {
 
 	let btnLabel = document.createElement('label');
 	btnLabel.classList.add('form-check-label');
+	btnLabel.classList.add('noselect');
 	btnLabel.innerText = 'True';
 
 	let closeButton = document.createElement('button');
@@ -162,7 +173,7 @@ function addAnswerFunc () {
 	answer.append(btnLabel);
 	answer.append(closeButton);
 
-//	dragNDrop();
+	dragNDrop();
 
 	return answer;
 }
@@ -205,9 +216,9 @@ document.addEventListener('click', function (e) {
 
 		for (let elem of addQuestionBtn) {
 		if(elem == e.target) {
-			let parent = elem.parentNode;
+			let prev = elem.previousSibling;
 			let newElem = addQuestionFunc();
-			parent.insertBefore(newElem, elem);
+			prev.append(newElem);
 		}
 	}
 });
@@ -241,7 +252,7 @@ let sendBtn = document.querySelector('.send');
 sendBtn.addEventListener('click', function () {
 
 
-	let quizContainer = document.querySelector('.quizContainer');;
+	let quizContainer = document.querySelector('.quizContainer');
 
 	let quizList = quizContainer.childNodes;
 
@@ -259,23 +270,25 @@ sendBtn.addEventListener('click', function () {
 
 		quizArr[i-3].questions = [];
 
+		let questions = quizElems[2].childNodes;
 
-		for (n=2; n<(quizElems.length-1); n++) {
 
-			let questionElems = quizElems[n].childNodes[1].childNodes;
+		for (n=0; n<(questions.length); n++) {
 
-			quizArr[i-3].questions[n-2] = {};
+			let questionElems = questions[n].childNodes[1].childNodes;
 
-			quizArr[i-3].questions[n-2].questionName = questionElems[1].value;
+			quizArr[i-3].questions[n] = {};
 
-			quizArr[i-3].questions[n-2].answers = [];
+			quizArr[i-3].questions[n].questionName = questionElems[1].value;
+
+			quizArr[i-3].questions[n].answers = [];
 
 			for (a = 2; a<(questionElems.length-1); a++) {
 				let answers = questionElems[a].childNodes;
 
-				quizArr[i-3].questions[n-2].answers[a-2] = {};
-				quizArr[i-3].questions[n-2].answers[a-2].answerName = answers[0].value;
-				quizArr[i-3].questions[n-2].answers[a-2].answerIsTrue = answers[1].checked;
+				quizArr[i-3].questions[n].answers[a-2] = {};
+				quizArr[i-3].questions[n].answers[a-2].answerName = answers[0].value;
+				quizArr[i-3].questions[n].answers[a-2].answerIsTrue = answers[1].checked;
 			};
 		};
 	};
@@ -284,30 +297,68 @@ sendBtn.addEventListener('click', function () {
 
 });
 
+let toggleTrue = true;
+let toggleFalse = false;
+
+function inner() {
+	toggleTrue = true;
+	toggleFalse = false;
+}
+
+function outer() {
+	toggleTrue = false;
+	toggleFalse = true;
+}
+
 
 function dragNDrop() {
 
-	dragula(
-		[
-			document.querySelector('.quizContainer')
-		]);
-	// dragula(
-	// 	[
-	// 		document.querySelector('.card-body')
+	const elems = document.querySelectorAll('.questionsContainer');
+	let arr = [];
+	for (elem of elems) {
+		arr.push(elem);
+	}
 
+	dragula(arr
+	,{
+		moves: function (el, source, handle, sibling) {
 
-	// 	]);
+			if (true) {
+				return toggleTrue;
+			}
+		}
+	}
+	);
+
+	dragula([
+
+		document.querySelector('.quizContainer')
+	]
+		,{
+			moves: function (el, source, handle, sibling) {
+				if(true) {
+					return toggleFalse;
+				}
+			}
+		}
+	);
 };
 
+document.addEventListener('mouseover', function(e){
 
-document.addEventListener('mousedown', function(e) {
+	const target = e.target;
+//	const paarent = target.parentNode;
 
-	let target = e.target;
-	console.log(target);
-// 		if (target.classList.contains('question')) {
+//	e.stopPropagation;
 
+	if (target.classList.contains('draggableQuestion')) {
+		inner();
+		dragNDrop();
+		console.log('inner');
+	} else if (target.classList.contains('qstn')) {
+		outer();
+		dragNDrop();
+		console.log('outer');	
+	};
 
-// //			e.stopPropagation();
-// //			console.log('test');
-// 		};
-	});
+});
