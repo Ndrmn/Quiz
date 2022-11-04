@@ -52,23 +52,9 @@ function createQuizFunc () {
 	newQuestion.classList.add('addQuestion');
 	newQuestion.innerText = '+ question';
 
-	// let sendButtonDiv = document.createElement('div');
-	// sendButtonDiv.classList.add('d-flex');
-	// sendButtonDiv.classList.add('justify-content-center');
-
-	// let sendButton = document.createElement('button');
-	// sendButton.classList.add('btn');
-	// sendButton.classList.add('btn-primary');
-	// sendButton.classList.add('send');
-	// sendButton.type = 'button';
-	// sendButton.innerText = 'Send';
-
-
-
 	let quizContainer = document.querySelector('.quizContainer');
 
 	quiz.append(closeButton);
-//	sendButtonDiv.append(sendButton);
 	quizBody.append(h3Title);
 	quizBody.append(inputQuizName);
 	quizBody.append(questionContainer);
@@ -83,7 +69,7 @@ function createQuizFunc () {
 		showButton.classList.remove('hide');
 	};
 
-	dragNDrop();
+//	dragNDrop();
 
 }
 
@@ -118,6 +104,9 @@ function addQuestionFunc () {
 	questionName.placeholder = 'Question name';
 	questionName.ariaLabel = 'default input example';
 
+	let answerContainer = document.createElement('div');
+	answerContainer.classList.add('.answerContainer');
+
 	let addAnswer = document.createElement('button');
 	addAnswer.type = 'button';
 	addAnswer.classList.add('btn');
@@ -127,12 +116,13 @@ function addQuestionFunc () {
 
 	questionBody.append(questionTitle);
 	questionBody.append(questionName);
+	questionBody.append(answerContainer);
 	questionBody.append(addAnswer);
 
 	question.append(closeButton);
 	question.append(questionBody);
 
-	dragNDrop();
+//	dragNDrop();
 
 	return question;
 }
@@ -173,7 +163,7 @@ function addAnswerFunc () {
 	answer.append(btnLabel);
 	answer.append(closeButton);
 
-	dragNDrop();
+//	dragNDrop();
 
 	return answer;
 }
@@ -205,7 +195,7 @@ document.addEventListener('click', function (e) {
 			buttonToHide.classList.add('hide');
 		}
 	}
-	dragNDrop();
+//	dragNDrop();
 });
 
 // Add question button
@@ -232,15 +222,15 @@ document.addEventListener('click', function (e) {
 		for (let elem of addAnswerBtn) {
 		if (elem == e.target) {
 
-			if (elem.previousSibling.name > 0) {
-				currentNameValue = elem.previousSibling.name; 
+			if (elem.previousSibling.childNodes.length > 0) {
+				currentNameValue = elem.previousSibling.childNodes[0].name; 
 			} else {
 				currentNameValue = nextName();
 			}
 
-			let parent = elem.parentNode;
+			let prev = elem.previousSibling;
 			let newElem = addAnswerFunc();
-			parent.insertBefore(newElem, elem);
+			prev.append(newElem);
 		}
 	}
 });
@@ -297,39 +287,124 @@ sendBtn.addEventListener('click', function () {
 
 });
 
-let toggleTrue = true;
-let toggleFalse = false;
+let qzsBoolean;
+let qstnsBoolean;
+let answrsBoolean;
 
-function inner() {
-	toggleTrue = true;
-	toggleFalse = false;
-}
+function qzs() {
 
-function outer() {
-	toggleTrue = false;
-	toggleFalse = true;
-}
+	qzsBoolean = true;
+	qstnsBoolean = false;
+	answrsBoolean = false;
+};
 
+function qstns() {
 
-function dragNDrop() {
+	qzsBoolean = false;
+	qstnsBoolean = true;
+	answrsBoolean = false;
+};
 
-	const elems = document.querySelectorAll('.questionsContainer');
-	let arr = [];
-	for (elem of elems) {
-		arr.push(elem);
+function answrs() {
+
+	qzsBoolean = false;
+	qstnsBoolean = false;
+	answrsBoolean = true;
+	console.log('bool');
+};
+
+// function dragNDrop() {
+
+// 	const elemsQ = document.querySelectorAll('.questionsContainer');
+// 	let arrQ = [];
+// 	for (elem of elemsQ) {
+// 		arrQ.push(elem);
+// 	}
+
+// 	dragula(arrQ
+// 		,{
+// 			moves: function (el, source, handle, sibling) {
+
+// 				if (true) {
+// 					return qstnsBoolean;
+// 				}
+// 			}
+// 		}
+// 	);
+
+// 	const elemsA = document.querySelectorAll('.answerContainer');
+// 	let arrA = [];
+// 	for (elem of elemsA) {
+// 		arrA.push(elem);
+// 	}
+
+// 	dragula(arrA
+// 		,{
+// 			moves: function (el, source, handle, sibling) {
+
+// 				if (true) {
+// 					return answrsBoolean;
+// 				}
+// 			}
+// 		}
+// 	);
+
+// 	dragula([
+
+// 		document.querySelector('.quizContainer')
+// 	]
+// 		,{
+// 			moves: function (el, source, handle, sibling) {
+// 				if(true) {
+// 					return qzsBoolean;
+// 				}
+// 			}
+// 		}
+// 	);
+// };
+
+function dndQu() {
+
+	const elemsQ = document.querySelectorAll('.questionsContainer');
+	let arrQ = [];
+	for (elem of elemsQ) {
+		arrQ.push(elem);
 	}
 
-	dragula(arr
-	,{
-		moves: function (el, source, handle, sibling) {
+	dragula(arrQ
+		,{
+			moves: function (el, source, handle, sibling) {
 
-			if (true) {
-				return toggleTrue;
+				if (true) {
+					return qstnsBoolean;
+				}
 			}
 		}
-	}
 	);
+};
 
+function dndAn() {
+
+	const elemsA = document.querySelectorAll('.answerContainer');
+	let arrA = [];
+	for (elem of elemsA) {
+		arrA.push(elem);
+	};
+
+	dragula(arrA
+		,{
+			moves: function (el, source, handle, sibling) {
+
+				if (true) {
+						console.log('drag');
+					return answrsBoolean;
+				}
+			}
+		}
+	);
+};
+
+function dndQz() {
 	dragula([
 
 		document.querySelector('.quizContainer')
@@ -337,28 +412,51 @@ function dragNDrop() {
 		,{
 			moves: function (el, source, handle, sibling) {
 				if(true) {
-					return toggleFalse;
+					return qzsBoolean;
 				}
 			}
 		}
 	);
 };
 
+
+
+
+
+
+// document.addEventListener('mouseover', function(e){
+
+// 	const target = e.target;
+
+// 	if (target.classList.contains('answer')) {
+// 		answrs();
+// 		dragNDrop();
+// 	} else if (target.classList.contains('draggableQuestion')) {
+// 		qstns();
+// 		dragNDrop();
+// 	} else if (target.classList.contains('qstn')) {
+// 		qzs();
+// 		dragNDrop();
+// 	};
+
+// });
+
 document.addEventListener('mouseover', function(e){
 
 	const target = e.target;
-//	const paarent = target.parentNode;
 
-//	e.stopPropagation;
-
-	if (target.classList.contains('draggableQuestion')) {
-		inner();
-		dragNDrop();
-		console.log('inner');
+	if (target.classList.contains('answer')) {
+		answrs();
+		dndAn();
+				console.log('answ');
+	} else if (target.classList.contains('draggableQuestion')) {
+		qstns();
+		dndQu();
+				console.log('quest');
 	} else if (target.classList.contains('qstn')) {
-		outer();
-		dragNDrop();
-		console.log('outer');	
+		qzs();
+		dndQz();
+				console.log('quiz');
 	};
 
 });
