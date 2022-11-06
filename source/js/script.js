@@ -105,7 +105,7 @@ function addQuestionFunc () {
 	questionName.ariaLabel = 'default input example';
 
 	let answerContainer = document.createElement('div');
-	answerContainer.classList.add('.answerContainer');
+	answerContainer.classList.add('answerContainer');
 
 	let addAnswer = document.createElement('button');
 	addAnswer.type = 'button';
@@ -310,58 +310,9 @@ function answrs() {
 	qzsBoolean = false;
 	qstnsBoolean = false;
 	answrsBoolean = true;
-	console.log('bool');
+
 };
 
-// function dragNDrop() {
-
-// 	const elemsQ = document.querySelectorAll('.questionsContainer');
-// 	let arrQ = [];
-// 	for (elem of elemsQ) {
-// 		arrQ.push(elem);
-// 	}
-
-// 	dragula(arrQ
-// 		,{
-// 			moves: function (el, source, handle, sibling) {
-
-// 				if (true) {
-// 					return qstnsBoolean;
-// 				}
-// 			}
-// 		}
-// 	);
-
-// 	const elemsA = document.querySelectorAll('.answerContainer');
-// 	let arrA = [];
-// 	for (elem of elemsA) {
-// 		arrA.push(elem);
-// 	}
-
-// 	dragula(arrA
-// 		,{
-// 			moves: function (el, source, handle, sibling) {
-
-// 				if (true) {
-// 					return answrsBoolean;
-// 				}
-// 			}
-// 		}
-// 	);
-
-// 	dragula([
-
-// 		document.querySelector('.quizContainer')
-// 	]
-// 		,{
-// 			moves: function (el, source, handle, sibling) {
-// 				if(true) {
-// 					return qzsBoolean;
-// 				}
-// 			}
-// 		}
-// 	);
-// };
 
 function dndQu() {
 
@@ -383,26 +334,52 @@ function dndQu() {
 	);
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 function dndAn() {
 
+
 	const elemsA = document.querySelectorAll('.answerContainer');
-	let arrA = [];
-	for (elem of elemsA) {
-		arrA.push(elem);
-	};
 
-	dragula(arrA
-		,{
-			moves: function (el, source, handle, sibling) {
+	for(i=0; i<elemsA.length; i++) {
 
-				if (true) {
-						console.log('drag');
-					return answrsBoolean;
+		const elem = [];
+		elem[0] = elemsA[i];
+
+		dragula(elem
+			,{
+				moves: function (el, source, handle, sibling) {
+
+					if (true) {
+						return answrsBoolean;
+					}
 				}
 			}
-		}
-	);
+		);
+	};
 };
+
+
+
+
+
+
+
+
+
+
+
 
 function dndQz() {
 	dragula([
@@ -421,26 +398,6 @@ function dndQz() {
 
 
 
-
-
-
-// document.addEventListener('mouseover', function(e){
-
-// 	const target = e.target;
-
-// 	if (target.classList.contains('answer')) {
-// 		answrs();
-// 		dragNDrop();
-// 	} else if (target.classList.contains('draggableQuestion')) {
-// 		qstns();
-// 		dragNDrop();
-// 	} else if (target.classList.contains('qstn')) {
-// 		qzs();
-// 		dragNDrop();
-// 	};
-
-// });
-
 document.addEventListener('mouseover', function(e){
 
 	const target = e.target;
@@ -448,15 +405,15 @@ document.addEventListener('mouseover', function(e){
 	if (target.classList.contains('answer')) {
 		answrs();
 		dndAn();
-				console.log('answ');
+
 	} else if (target.classList.contains('draggableQuestion')) {
 		qstns();
 		dndQu();
-				console.log('quest');
+
 	} else if (target.classList.contains('qstn')) {
 		qzs();
 		dndQz();
-				console.log('quiz');
+
 	};
 
 });

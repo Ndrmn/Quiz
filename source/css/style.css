@@ -101,7 +101,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .answer {
-  margin-left: 20px;
+  padding-left: 20px;
   margin-top: 20px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -134,7 +134,6 @@ footer {
 
 .questionsContainer {
   padding: 20px 0px;
-  min-height: 100px;
 }
 
 .noselect {
