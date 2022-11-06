@@ -273,12 +273,15 @@ sendBtn.addEventListener('click', function () {
 
 			quizArr[i-3].questions[n].answers = [];
 
-			for (a = 2; a<(questionElems.length-1); a++) {
-				let answers = questionElems[a].childNodes;
+			let answers = questionElems[2].childNodes;
 
-				quizArr[i-3].questions[n].answers[a-2] = {};
-				quizArr[i-3].questions[n].answers[a-2].answerName = answers[0].value;
-				quizArr[i-3].questions[n].answers[a-2].answerIsTrue = answers[1].checked;
+
+			for (a = 0; a<(answers.length); a++) {
+				let answer = answers[a].childNodes;
+
+				quizArr[i-3].questions[n].answers[a] = {};
+				quizArr[i-3].questions[n].answers[a].answerName = answer[0].value;
+				quizArr[i-3].questions[n].answers[a].answerIsTrue = answer[1].checked;
 			};
 		};
 	};
